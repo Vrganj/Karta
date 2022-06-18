@@ -1,4 +1,8 @@
 name: Karta
 main: me.vrganj.karta.Karta
 version: 0.1
-api-version: 1.19
+api-version: 1.13
+
+commands:
+  karta:
+    description: Manage images and maps.

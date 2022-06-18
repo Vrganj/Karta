@@ -1,16 +1,20 @@
 plugins {
     id("java")
+    id("io.papermc.paperweight.userdev") version "1.3.7"
 }
 
 group = "me.vrganj"
 version = "1.0-SNAPSHOT"
 
-repositories {
-    maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
+dependencies {
+    paperDevBundle("1.18.2-R0.1-SNAPSHOT")
 }
 
-dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.19-R0.1-SNAPSHOT")
+tasks {
+    // Configure reobfJar to run when invoking the build task
+    assemble {
+        dependsOn(reobfJar)
+    }
 }
 
 java {
