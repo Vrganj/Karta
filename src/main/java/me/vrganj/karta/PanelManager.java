@@ -2,45 +2,57 @@ package me.vrganj.karta;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import io.papermc.paper.event.packet.PlayerChunkLoadEvent;
-import io.papermc.paper.event.packet.PlayerChunkUnloadEvent;
-import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
+import me.vrganj.karta.image.ImageInput;
+import me.vrganj.karta.image.ImageKey;
+import me.vrganj.karta.image.renderer.Renderer;
+import me.vrganj.karta.image.source.ImageSource;
+import me.vrganj.karta.panel.NmsPanel;
+import me.vrganj.karta.panel.Panel;
+import me.vrganj.karta.panel.placement.PanelPlacement;
 import org.bukkit.Bukkit;
-import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
+import org.bukkit.Chunk;
 import org.bukkit.event.Listener;
 
-import java.util.Arrays;
-import java.util.stream.IntStream;
+import java.util.logging.Logger;
 
 public class PanelManager implements Listener {
-    private final Multimap<Long, Panel> panels = ArrayListMultimap.create();
-    private final Karta plugin;
 
-    public PanelManager(Karta plugin) {
-        this.plugin = plugin;
-        Bukkit.getPluginManager().registerEvents(this, plugin);
+    private final Logger logger;
+    private final ImageSource imageSource;
+    private final Renderer renderer;
+
+    private final Multimap<Long, Panel> panels = ArrayListMultimap.create();
+
+    public PanelManager(Karta plugin, Logger logger, ImageSource imageSource, Renderer renderer) {
+        this.logger = logger;
+        this.imageSource = imageSource;
+        this.renderer = renderer;
+
+        Bukkit.getPluginManager().registerEvents(new PanelListener(panels), plugin);
+    }
+
+    public void addDefaultPanel(PanelPlacement placement, ImageKey imageKey) {
+        addPanel(new NmsPanel(logger, new ImageInput(imageKey, imageSource, renderer), placement));
     }
 
     public void addPanel(Panel panel) {
-        addPanel(panel, true);
-    }
+        var location = panel.getPlacement().location();
 
-    public void addPanel(Panel panel, boolean forceRender) {
-        panels.put(panel.location().getChunk().getChunkKey(), panel);
+        int x = location.x() >> 4;
+        int z = location.z() >> 4;
 
-        if (forceRender) {
-            // TODO: check whether they're actually in range
+        panels.put(Chunk.getChunkKey(x, z), panel);
 
-            for (var player : Bukkit.getOnlinePlayers()) {
-                render(player, panel);
-            }
+        // FIXME: WORLD
+        var world = Bukkit.getWorlds().getFirst();
+
+        for (var player : world.getPlayersSeeingChunk(x, z)) {
+            player.sendRichMessage("<green>Showing <yellow>" + panel);
+            panel.show(player);
         }
     }
 
-    private void render(Player player, Panel panel) {
+    /*private void render(Player player, Panel panel) {
         var down = panel.down();
         var right = panel.right();
 
@@ -86,35 +98,5 @@ public class PanelManager implements Listener {
                 }
             }
         });
-    }
-
-    private void destroy(Player player, Panel panel) {
-        var renderer = panel.renderer();
-        int width = (int) Math.ceil(renderer.getWidth() / 128.0);
-        int height = (int) Math.ceil(renderer.getHeight() / 128.0);
-        var range = IntStream.range(panel.hashCode(), panel.hashCode() + width * height);
-
-        var packet = new ClientboundRemoveEntitiesPacket(range.toArray());
-        ((CraftPlayer) player).getHandle().connection.send(packet);
-    }
-
-    @EventHandler
-    @SuppressWarnings("unused")
-    public void onChunkLoad(PlayerChunkLoadEvent event) {
-        var player = event.getPlayer();
-
-        for (var panel : panels.get(event.getChunk().getChunkKey())) {
-            render(player, panel);
-        }
-    }
-
-    @EventHandler
-    @SuppressWarnings("unused")
-    public void onChunkUnload(PlayerChunkUnloadEvent event) {
-        var player = event.getPlayer();
-
-        for (var panel : panels.get(event.getChunk().getChunkKey())) {
-            destroy(player, panel);
-        }
-    }
+    }*/
 }

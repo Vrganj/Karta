@@ -1,8 +1,13 @@
 package me.vrganj.karta;
 
-import me.vrganj.karta.renderer.ImageRenderer;
+import me.vrganj.karta.image.ImageKey;
+import me.vrganj.karta.image.source.ImageSource;
+import me.vrganj.karta.panel.placement.PanelDimensions;
+import me.vrganj.karta.panel.placement.PanelPlacement;
+import me.vrganj.karta.panel.placement.PanelRotation;
+import me.vrganj.karta.util.BukkitUtil;
+import me.vrganj.karta.util.Util;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
-import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -10,17 +15,21 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class KartaCommand implements TabExecutor {
     private static final double RAY_TRACE_DISTANCE = 10;
 
-    private final Karta plugin;
+    private final Logger logger;
+    private final PanelManager panelManager;
+    private final ImageSource imageSource;
 
-    public KartaCommand(Karta plugin) {
-        this.plugin = plugin;
+    public KartaCommand(Logger logger, PanelManager panelManager, ImageSource imageSource) {
+        this.logger = logger;
+        this.panelManager = panelManager;
+        this.imageSource = imageSource;
     }
 
     @Override
@@ -31,9 +40,10 @@ public class KartaCommand implements TabExecutor {
                 return true;
             }
 
-            var file = new File(plugin.getDataFolder(), args[1]);
+            var imageKey = new ImageKey(player.getUniqueId(), args[1]);
 
-            if (!file.exists()) {
+            // TODO: async
+            if (!imageSource.exists(imageKey).join()) {
                 Util.send(player, "<red>That image doesn't exist!");
                 return true;
             }
@@ -48,24 +58,18 @@ public class KartaCommand implements TabExecutor {
             var face = trace.getHitBlockFace();
             var block = trace.getHitBlock();
 
-            BlockFace down, right;
-
-            if (face == BlockFace.UP || face == BlockFace.DOWN) {
-                var direction = Util.getDirection(player.getLocation().getYaw());
-
-                right = Util.getRight(direction);
-                down = direction.getOppositeFace();
-            } else {
-                down = BlockFace.DOWN;
-                right = Util.getRight(face.getOppositeFace());
-            }
-
-            var renderer = new ImageRenderer(file);
             var location = block.getRelative(face).getLocation();
-            var panel = new Panel(location, renderer, down, right, face);
+            // TODO: calculate instead of hardcoding
+            var dimensions = new PanelDimensions(5, 5);
+            var placement = new PanelPlacement(
+                    BukkitUtil.toPanelLocation(location),
+                    BukkitUtil.toPanelFace(face),
+                    PanelRotation.NONE,
+                    dimensions
+            );
+            panelManager.addDefaultPanel(placement, imageKey);
 
-            plugin.getPanelManager().addPanel(panel);
-            Util.send(player, "<white>Placed <green><image>", Placeholder.unparsed("image", file.getName()));
+            Util.send(player, "<white>Placed <green><image>", Placeholder.unparsed("image", imageKey.image()));
         }
 
         return true;
