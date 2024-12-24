@@ -113,8 +113,8 @@ public class NmsPanel implements Panel {
 
         for (int row = 0; row < dimensions.height(); row++) {
             for (int col = 0; col < dimensions.width(); col++) {
-                // TODO: WORLD
-                var itemFrame = new ItemFrame(EntityType.GLOW_ITEM_FRAME, ((CraftWorld) Bukkit.getWorlds().getFirst()).getHandle());
+                var world = Bukkit.getWorld(placement.location().world());
+                var itemFrame = new ItemFrame(EntityType.GLOW_ITEM_FRAME, ((CraftWorld) world).getHandle());
                 var itemStack = new ItemStack(Items.FILLED_MAP);
                 itemStack.set(DataComponents.MAP_ID, new MapId(-itemFrame.getId()));
                 itemFrame.setItem(itemStack, false, false);

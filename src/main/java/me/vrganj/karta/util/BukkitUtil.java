@@ -8,7 +8,7 @@ import org.bukkit.block.BlockFace;
 public class BukkitUtil {
 
     public static PanelLocation toPanelLocation(Location location) {
-        return new PanelLocation(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        return new PanelLocation(location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }
 
     public static PanelFace toPanelFace(BlockFace face) {
