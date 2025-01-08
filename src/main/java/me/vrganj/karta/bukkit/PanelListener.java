@@ -4,6 +4,7 @@ import com.destroystokyo.paper.event.player.PlayerUseUnknownEntityEvent;
 import io.papermc.paper.event.packet.PlayerChunkLoadEvent;
 import io.papermc.paper.event.packet.PlayerChunkUnloadEvent;
 import me.vrganj.karta.api.PanelManager;
+import me.vrganj.karta.api.panel.placement.PanelPlacement;
 import me.vrganj.karta.bukkit.panel.NmsPanel;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -39,10 +40,6 @@ public class PanelListener implements Listener {
 
     @EventHandler
     public void onPanelBreak(PlayerUseUnknownEntityEvent event) {
-        if (!event.isAttack()) {
-            return;
-        }
-
         Player player = event.getPlayer();
 
         // TODO: optimize
@@ -53,7 +50,14 @@ public class PanelListener implements Listener {
                     if (panel instanceof NmsPanel nmsPanel) {
                         if (nmsPanel.getShowing().get(player.getUniqueId()).contains(event.getEntityId())) {
                             if (player.hasPermission("karta.admin") || panel.getOwnerId().equals(player.getUniqueId())) {
-                                panelManager.removePanel(panel);
+                                if (event.isAttack()) {
+                                    panelManager.removePanel(panel);
+                                } else {
+                                    var placement = new PanelPlacement(panel.getPlacement().location(), panel.getPlacement().face(), panel.getPlacement().rotation().clockwise(), panel.getPlacement().dimensions());
+                                    panelManager.removePanel(panel);
+                                    panelManager.addDefaultPanel(panel.getOwnerId(), panel.getImageInput().imageKey(), placement);
+                                }
+
                                 return;
                             }
                         }

@@ -47,6 +47,8 @@ public class KartaCommand implements TabExecutor {
 
             switch (args[0].toLowerCase()) {
                 case "download" -> {
+                    // TODO: sanitize
+
                     if (!sender.hasPermission("karta.download")) {
                         sender.sendRichMessage("<red>Insufficient permissions!");
                         return true;
@@ -56,11 +58,18 @@ public class KartaCommand implements TabExecutor {
                     var imageKey = new ImageKey(player.getUniqueId(), name);
                     var file = imageSource.getFile(imageKey);
 
+                    if (file.getParentFile().mkdirs()) {
+                        sender.sendRichMessage("<green>Created " + file.getName() + " at " + file.getParentFile().getAbsolutePath());
+                    } else {
+                        sender.sendRichMessage("<red>Couldn't create " + file.getName() + " at " + file.getParentFile().getAbsolutePath());
+                    }
+
                     try (var input = new BufferedInputStream(new URL(args[2]).openStream());
                          var output = new FileOutputStream(file)) {
                         input.transferTo(output);
                     } catch (IOException e) {
                         sender.sendRichMessage("<red>Something went wrong");
+                        logger.warn("Failed to download image", e);
                     }
                 }
 

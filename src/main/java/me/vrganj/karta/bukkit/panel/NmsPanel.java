@@ -92,7 +92,7 @@ public class NmsPanel implements Panel {
                 itemFrame.setItem(itemStack, false, false);
 
                 itemFrame.setDirection(NmsUtil.fromPanelFace(placement.face()));
-                itemFrame.rotate(NmsUtil.fromPanelRotation(placement.rotation()));
+                itemFrame.setRotation(placement.rotation().ordinal());
 
                 itemFrame.setPos(
                         placement.location().x() + row * down.getStepX() + col * right.getStepX(),
@@ -116,7 +116,7 @@ public class NmsPanel implements Panel {
             ImageData data;
 
             try {
-                data = imageInput.render().join();
+                data = imageInput.render(dimensions).join();
             } catch (CompletionException e) {
                 logger.warn("Failed to render image {}", imageInput, e.getCause());
                 throw e;
