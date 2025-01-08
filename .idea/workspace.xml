@@ -5,20 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12b6bb22-6482-4e94-bcf8-27f7b91de2a8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/FileAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/NmsPanelFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/PanelAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/PanelFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/Karta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/Karta.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/KartaCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/KartaCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/PanelListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/PanelListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/PanelManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/PanelManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/image/ImageKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/image/ImageKey.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/image/source/FileImageSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/image/source/FileImageSource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/image/source/ImageSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/image/source/ImageSource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/FileAdapter.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/NmsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/NmsPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/Panel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/Panel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/util/ChunkMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/util/ChunkMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/util/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/util/Util.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -168,7 +162,7 @@
       <workItem from="1655381157396" duration="3988000" />
       <workItem from="1655413542283" duration="27222000" />
       <workItem from="1736350281472" duration="164000" />
-      <workItem from="1736350448645" duration="4834000" />
+      <workItem from="1736350448645" duration="10479000" />
     </task>
     <servers />
   </component>

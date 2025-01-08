@@ -2,6 +2,8 @@ package me.vrganj.karta.panel;
 
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import me.vrganj.karta.image.ImageData;
@@ -11,6 +13,8 @@ import me.vrganj.karta.panel.placement.PanelPlacement;
 import me.vrganj.karta.util.NmsUtil;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.PacketSendListener;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
@@ -24,8 +28,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -35,6 +42,7 @@ public class NmsPanel implements Panel {
     private final Logger logger;
 
     private final Object2ObjectMap<UUID, IntList> showing = new Object2ObjectOpenHashMap<>();
+    private final IntSet itemFrameIds = new IntOpenHashSet();
 
     private final UUID ownerId;
     private final ImageInput imageInput;
@@ -141,6 +149,7 @@ public class NmsPanel implements Panel {
                 connection.send(new ClientboundSetEntityDataPacket(itemFrame.getId(), itemFrame.getEntityData().packAll()));
 
                 entities.add(itemFrame.getId());
+                itemFrameIds.add(itemFrame.getId());
             }
         }
 
@@ -155,6 +164,8 @@ public class NmsPanel implements Panel {
                 logger.warn("Failed to get image {}", imageInput, e.getCause());
                 throw e;
             }
+
+            List<CompletableFuture<Void>> futures = new ArrayList<>();
 
             for (int row = 0; row < dimensions.height(); row++) {
                 for (int col = 0; col < dimensions.width(); col++) {
@@ -172,22 +183,45 @@ public class NmsPanel implements Panel {
                     var packet = new ClientboundMapItemDataPacket(mapId, (byte) 0, false, null, patch);
 
                     // TODO: bundle?
-                    // TODO: return only when all the callbacks are complete
-                    connection.send(packet);
+                    var future = new CompletableFuture<Void>();
+                    futures.add(future);
+
+                    connection.send(packet, new PacketSendListener() {
+                        @Override
+                        public void onSuccess() {
+                            future.complete(null);
+                        }
+
+                        @Override
+                        public @Nullable Packet<?> onFailure() {
+                            future.complete(null);
+                            return PacketSendListener.super.onFailure();
+                        }
+                    });
                 }
             }
+
+            CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         });
     }
 
     @Override
     public void hide(Player player) {
+        // TODO: check if this is called on quit
+
         var ids = showing.remove(player.getUniqueId());
 
         if (ids == null) {
             return;
         }
 
+        itemFrameIds.removeAll(ids);
+
         var packet = new ClientboundRemoveEntitiesPacket(ids);
         ((CraftPlayer) player).getHandle().connection.send(packet);
+    }
+
+    public IntSet getItemFrameIds() {
+        return itemFrameIds;
     }
 }

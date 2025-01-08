@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
+import static net.kyori.adventure.text.minimessage.tag.resolver.Placeholder.unparsed;
+
 public class KartaCommand implements TabExecutor {
     private static final double RAY_TRACE_DISTANCE = 10;
 
@@ -44,53 +46,92 @@ public class KartaCommand implements TabExecutor {
                 return true;
             }
 
-            if (args[0].equalsIgnoreCase("download")) {
-                var name = args[1];
-                var imageKey = new ImageKey(player.getUniqueId(), name);
-                var file = imageSource.getFile(imageKey);
+            switch (args[0].toLowerCase()) {
+                case "download" -> {
+                    if (!sender.hasPermission("karta.download")) {
+                        sender.sendRichMessage("<red>Insufficient permissions!");
+                        return true;
+                    }
 
-                try (var input = new BufferedInputStream(new URL(args[2]).openStream());
-                     var output = new FileOutputStream(file)) {
-                    input.transferTo(output);
-                } catch (IOException e) {
-                    sender.sendRichMessage("<red>Something went wrong");
+                    var name = args[1];
+                    var imageKey = new ImageKey(player.getUniqueId(), name);
+                    var file = imageSource.getFile(imageKey);
+
+                    try (var input = new BufferedInputStream(new URL(args[2]).openStream());
+                         var output = new FileOutputStream(file)) {
+                        input.transferTo(output);
+                    } catch (IOException e) {
+                        sender.sendRichMessage("<red>Something went wrong");
+                    }
                 }
 
-                return true;
-            } else if (args[0].equalsIgnoreCase("place")) {
-                var imageKey = new ImageKey(player.getUniqueId(), args[1]);
+                case "place" -> {
+                    if (!sender.hasPermission("karta.place")) {
+                        sender.sendRichMessage("<red>Insufficient permissions!");
+                        return true;
+                    }
 
-                if (!imageSource.exists(imageKey).join()) {
-                    sender.sendRichMessage("<red>That image doesn't exist!");
-                    return true;
+                    if (args.length < 2) {
+                        sender.sendRichMessage("<red>You didn't specify the image name");
+                        return true;
+                    }
+
+                    var imageKey = new ImageKey(player.getUniqueId(), args[1]);
+
+                    if (!imageSource.exists(imageKey).join()) {
+                        sender.sendRichMessage("<red>That image doesn't exist!");
+                        return true;
+                    }
+
+                    var trace = player.rayTraceBlocks(RAY_TRACE_DISTANCE);
+
+                    if (trace == null || trace.getHitBlock() == null || trace.getHitBlockFace() == null) {
+                        player.sendRichMessage("<red>No target block!");
+                        return true;
+                    }
+
+                    var face = trace.getHitBlockFace();
+                    var block = trace.getHitBlock();
+
+                    var location = block.getRelative(face).getLocation();
+                    // TODO: calculate instead of hardcoding
+
+                    if (args.length < 4) {
+                        sender.sendRichMessage("<red>You didn't specify the width and height");
+                        return true;
+                    }
+
+                    int width = Integer.parseInt(args[2]);
+                    int height = Integer.parseInt(args[3]);
+
+                    var dimensions = new PanelDimensions(width, height);
+
+                    var placement = new PanelPlacement(
+                            BukkitUtil.toPanelLocation(location),
+                            BukkitUtil.toPanelFace(face),
+                            PanelRotation.NONE,
+                            dimensions
+                    );
+
+                    panelManager.addDefaultPanel(player.getUniqueId(), imageKey, placement);
+
+                    sender.sendRichMessage("<white>Placed <green><image>", unparsed("image", imageKey.image()));
                 }
 
-                var trace = player.rayTraceBlocks(RAY_TRACE_DISTANCE);
+                case "delete" -> {
+                    if (!sender.hasPermission("karta.delete")) {
+                        sender.sendRichMessage("<red>Insufficient permissions!");
+                        return true;
+                    }
 
-                if (trace == null || trace.getHitBlock() == null || trace.getHitBlockFace() == null) {
-                    Util.send(player, "<red>No target block!");
-                    return true;
+                    var imageKey = new ImageKey(player.getUniqueId(), args[1]);
+                    imageSource.deleteImage(imageKey);
+                    sender.sendRichMessage("<green>Image deleted");
                 }
 
-                var face = trace.getHitBlockFace();
-                var block = trace.getHitBlock();
-
-                var location = block.getRelative(face).getLocation();
-                // TODO: calculate instead of hardcoding
-                var dimensions = new PanelDimensions(5, 5);
-                var placement = new PanelPlacement(
-                        BukkitUtil.toPanelLocation(location),
-                        BukkitUtil.toPanelFace(face),
-                        PanelRotation.NONE,
-                        dimensions
-                );
-                panelManager.addDefaultPanel(player.getUniqueId(), imageKey, placement);
-
-                Util.send(player, "<white>Placed <green><image>", Placeholder.unparsed("image", imageKey.image()));
-            } else if (args[1].equalsIgnoreCase("delete")) {
-                var imageKey = new ImageKey(player.getUniqueId(), args[1]);
-                imageSource.deleteImage(imageKey);
-                sender.sendRichMessage("<green>Image deleted");
+                default -> {
+                    sender.sendRichMessage("<red>Unknown subcommand");
+                }
             }
         }
 

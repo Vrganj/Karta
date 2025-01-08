@@ -12,24 +12,24 @@ import java.util.Set;
 public class ChunkMap<T> extends HashMap<String, Long2ObjectMap<Set<T>>> {
 
     public Set<T> get(Chunk key) {
-        var worldPanels = get(key.getWorld().getName());
+        var worldValues = get(key.getWorld().getName());
 
-        if (worldPanels == null) {
+        if (worldValues == null) {
             return Collections.emptySet();
         }
 
-        var chunkPanels = worldPanels.get(key.getChunkKey());
+        var chunkValues = worldValues.get(key.getChunkKey());
 
-        if (chunkPanels == null) {
+        if (chunkValues == null) {
             return Collections.emptySet();
         }
 
-        return chunkPanels;
+        return chunkValues;
     }
 
     public void add(Chunk key, T value) {
-        var worldPanels = computeIfAbsent(key.getWorld().getName(), k -> new Long2ObjectOpenHashMap<>());
-        var chunkPanels = worldPanels.computeIfAbsent(key.getChunkKey(), k -> new HashSet<>());
-        chunkPanels.add(value);
+        var worldValues = computeIfAbsent(key.getWorld().getName(), k -> new Long2ObjectOpenHashMap<>());
+        var chunkValues = worldValues.computeIfAbsent(key.getChunkKey(), k -> new HashSet<>());
+        chunkValues.add(value);
     }
 }

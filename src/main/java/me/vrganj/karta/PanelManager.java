@@ -6,11 +6,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import me.vrganj.karta.image.ImageKey;
-import me.vrganj.karta.panel.*;
+import me.vrganj.karta.panel.Panel;
+import me.vrganj.karta.panel.PanelAdapter;
+import me.vrganj.karta.panel.PanelFactory;
 import me.vrganj.karta.panel.placement.PanelPlacement;
 import me.vrganj.karta.util.ChunkMap;
 import org.bukkit.Bukkit;
-import org.bukkit.event.Listener;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -18,9 +19,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
-public class PanelManager implements Listener {
+public class PanelManager {
 
     private final File dataFolder;
     private final Logger logger;
@@ -35,14 +37,11 @@ public class PanelManager implements Listener {
         this.panelFactory = panelFactory;
 
         this.gson = new GsonBuilder()
-                .registerTypeAdapter(Panel.class, new PanelAdapter(panelFactory))
-                // TODO: remove concrete typep adapter
-                .registerTypeAdapter(NmsPanel.class, new PanelAdapter(panelFactory))
-                .registerTypeAdapter(File.class, new FileAdapter())
+                .registerTypeHierarchyAdapter(Panel.class, new PanelAdapter(panelFactory))
                 .setPrettyPrinting()
                 .create();
 
-        Bukkit.getPluginManager().registerEvents(new PanelListener(panels), plugin);
+        Bukkit.getPluginManager().registerEvents(new PanelListener(this, panels), plugin);
     }
 
     public void addDefaultPanel(UUID ownerId, ImageKey imageKey, PanelPlacement placement) {
@@ -60,6 +59,21 @@ public class PanelManager implements Listener {
         for (var player : chunk.getPlayersSeeingChunk()) {
             player.sendRichMessage("<green>Showing <yellow>" + panel);
             panel.show(player);
+        }
+    }
+
+    public void removePanel(Panel panel) {
+        var location = panel.getPlacement().location();
+        int x = location.x() >> 4;
+        int z = location.z() >> 4;
+        var chunk = Bukkit.getWorld(location.world()).getChunkAt(x, z, false);
+
+        Set<Panel> set = panels.get(chunk);
+
+        if (!set.isEmpty() && set.remove(panel)) {
+            for (var player : chunk.getPlayersSeeingChunk()) {
+                panel.hide(player);
+            }
         }
     }
 

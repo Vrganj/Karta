@@ -1,19 +1,24 @@
 package me.vrganj.karta;
 
+import com.destroystokyo.paper.event.player.PlayerUseUnknownEntityEvent;
 import io.papermc.paper.event.packet.PlayerChunkLoadEvent;
 import io.papermc.paper.event.packet.PlayerChunkUnloadEvent;
+import me.vrganj.karta.panel.NmsPanel;
 import me.vrganj.karta.panel.Panel;
 import me.vrganj.karta.util.ChunkMap;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
 
 public class PanelListener implements Listener {
 
+    private final PanelManager panelManager;
     private final ChunkMap<Panel> panels;
 
-    public PanelListener(ChunkMap<Panel> panels) {
+    public PanelListener(PanelManager panelManager, ChunkMap<Panel> panels) {
+        this.panelManager = panelManager;
         this.panels = panels;
     }
 
@@ -32,6 +37,35 @@ public class PanelListener implements Listener {
 
         for (var panel : panels.get(event.getChunk())) {
             panel.hide(player);
+        }
+    }
+
+    @EventHandler
+    public void onPanelBreak(PlayerUseUnknownEntityEvent event) {
+        if (!event.isAttack()) {
+            return;
+        }
+
+        Player player = event.getPlayer();
+
+        // TODO: optimize
+
+        for (var world : panels.values()) {
+            for (var chunk : world.values()) {
+                for (var panel : chunk) {
+                    if (panel instanceof NmsPanel nmsPanel) {
+                        if (nmsPanel.getItemFrameIds().contains(event.getEntityId())) {
+                            if (!player.hasPermission("karta.admin") || !panel.getOwnerId().equals(player.getUniqueId())) {
+                                continue;
+                            }
+
+                            panelManager.removePanel(panel);
+                        }
+
+                        return;
+                    }
+                }
+            }
         }
     }
 
