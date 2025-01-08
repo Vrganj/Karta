@@ -1,5 +1,5 @@
 name: Karta
-main: me.vrganj.karta.Karta
+main: me.vrganj.karta.bukkit.Karta
 version: 0.1
 api-version: 1.13
 

@@ -5,14 +5,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12b6bb22-6482-4e94-bcf8-27f7b91de2a8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/PanelManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/renderer/MapPalette.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/KartaCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/KartaCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/PanelListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/PanelListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/PanelManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/PanelManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/FileAdapter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/NmsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/NmsPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/util/ChunkMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/util/ChunkMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/util/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/util/Util.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/Karta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/Karta.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/KartaCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/KartaCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/PanelListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/PanelListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/PanelManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/BukkitPanelManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/image/ImageData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/image/ImageData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/image/ImageInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/image/ImageInput.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/image/ImageKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/image/ImageKey.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/image/renderer/DeprecatedRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/renderer/PrimitiveRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/image/renderer/NmsRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/renderer/NmsRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/image/renderer/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/renderer/Renderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/image/source/FileImageSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/image/source/FileImageSource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/image/source/ImageSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/image/source/ImageSource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/NmsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/panel/NmsPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/NmsPanelFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/panel/NmsPanelFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/Panel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/panel/Panel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/PanelAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/panel/PanelAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/PanelFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/panel/PanelFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/placement/PanelDimensions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/panel/placement/PanelDimensions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/placement/PanelFace.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/panel/placement/PanelFace.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/placement/PanelLocation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/panel/placement/PanelLocation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/placement/PanelPlacement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/panel/placement/PanelPlacement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/placement/PanelRotation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/panel/placement/PanelRotation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/util/BukkitUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/util/BukkitUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/util/ChunkMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/util/ChunkMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/util/NmsUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/util/NmsUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/util/Util.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,7 +184,7 @@
       <workItem from="1655381157396" duration="3988000" />
       <workItem from="1655413542283" duration="27222000" />
       <workItem from="1736350281472" duration="164000" />
-      <workItem from="1736350448645" duration="10479000" />
+      <workItem from="1736350448645" duration="13260000" />
     </task>
     <servers />
   </component>
