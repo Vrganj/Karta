@@ -1,36 +1,52 @@
 package me.vrganj.karta;
 
-import me.vrganj.karta.image.ImageInput;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import me.vrganj.karta.image.ImageKey;
-import me.vrganj.karta.image.renderer.Renderer;
-import me.vrganj.karta.image.source.ImageSource;
-import me.vrganj.karta.panel.NmsPanel;
-import me.vrganj.karta.panel.Panel;
+import me.vrganj.karta.panel.*;
 import me.vrganj.karta.panel.placement.PanelPlacement;
 import me.vrganj.karta.util.ChunkMap;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
+import org.slf4j.Logger;
 
-import java.util.logging.Logger;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
 
 public class PanelManager implements Listener {
 
+    private final File dataFolder;
     private final Logger logger;
-    private final ImageSource imageSource;
-    private final Renderer renderer;
+    private final PanelFactory panelFactory;
+    private final Gson gson;
 
     private final ChunkMap<Panel> panels = new ChunkMap<>();
 
-    public PanelManager(Karta plugin, Logger logger, ImageSource imageSource, Renderer renderer) {
+    public PanelManager(Karta plugin, Logger logger, PanelFactory panelFactory) {
+        this.dataFolder = plugin.getDataFolder();
         this.logger = logger;
-        this.imageSource = imageSource;
-        this.renderer = renderer;
+        this.panelFactory = panelFactory;
+
+        this.gson = new GsonBuilder()
+                .registerTypeAdapter(Panel.class, new PanelAdapter(panelFactory))
+                // TODO: remove concrete typep adapter
+                .registerTypeAdapter(NmsPanel.class, new PanelAdapter(panelFactory))
+                .registerTypeAdapter(File.class, new FileAdapter())
+                .setPrettyPrinting()
+                .create();
 
         Bukkit.getPluginManager().registerEvents(new PanelListener(panels), plugin);
     }
 
-    public void addDefaultPanel(PanelPlacement placement, ImageKey imageKey) {
-        addPanel(new NmsPanel(logger, new ImageInput(imageKey, imageSource, renderer), placement));
+    public void addDefaultPanel(UUID ownerId, ImageKey imageKey, PanelPlacement placement) {
+        addPanel(panelFactory.createPanel(ownerId, imageKey, placement));
     }
 
     public void addPanel(Panel panel) {
@@ -47,51 +63,52 @@ public class PanelManager implements Listener {
         }
     }
 
-    /*private void render(Player player, Panel panel) {
-        var down = panel.down();
-        var right = panel.right();
+    public void load() {
+        var directory = new File(dataFolder, "players");
+        var files = directory.listFiles();
 
-        int rotation;
-
-        if (down != BlockFace.DOWN) {
-            if (down == BlockFace.SOUTH) {
-                rotation = 0;
-            } else if (down == BlockFace.WEST) {
-                rotation = 1;
-            } else if (down == BlockFace.NORTH) {
-                rotation = 2;
-            } else {
-                rotation = 3;
-            }
-        } else {
-            rotation = 0;
+        if (files == null) {
+            return;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            var renderer = panel.renderer();
-            var render = renderer.render(player);
+        for (var playerDirectory : files) {
+            var file = new File(playerDirectory, "panels.json");
 
-            int id = panel.hashCode();
+            if (!file.exists()) {
+                continue;
+            }
 
-            for (int y = 0; y < Math.ceil(renderer.getHeight() / 128.0); ++y) {
-                var location = panel.location().clone().add(down.getDirection().clone().multiply(y));
+            try (var reader = new FileReader(file)) {
+                List<Panel> panels = gson.fromJson(reader, new TypeToken<List<Panel>>() {}.getType());
 
-                for (int x = 0; x < Math.ceil(renderer.getWidth() / 128.0); ++x) {
-                    int width = Math.min(128, renderer.getWidth() - 128 * x);
-                    int height = Math.min(128, renderer.getHeight() - 128 * y);
+                for (var panel : panels) {
+                    addPanel(panel);
+                }
+            } catch (IOException e) {
+                logger.error("Failed to load panels from {}", playerDirectory.getName(), e);
+            }
+        }
+    }
 
-                    byte[] slice = new byte[width * height];
+    public void save() {
+        Multimap<UUID, Panel> playerMap = HashMultimap.create();
 
-                    for (int i = 0; i < height; ++i) {
-                        for (int j = 0; j < width; ++j) {
-                            slice[i * width + j] = render[(i + 128 * y) * renderer.getWidth() + (j + 128 * x)];
-                        }
-                    }
-
-                    Util.spawnMap(location, player, id++, slice, width, height, Util.toDirection(panel.direction()), rotation);
-                    location.add(right.getDirection());
+        for (var world : panels.values()) {
+            for (var chunk : world.values()) {
+                for (var panel : chunk) {
+                    playerMap.put(panel.getOwnerId(), panel);
                 }
             }
-        });
-    }*/
+        }
+
+        for (var ownerId : playerMap.keySet()) {
+            var file = new File(dataFolder, "players" + File.separator + ownerId + File.separator + "panels.json");
+
+            try (var writer = new FileWriter(file)) {
+                gson.toJson(playerMap.get(ownerId), writer);
+            } catch (IOException e) {
+                logger.error("Failed to save player panels of {}", ownerId, e);
+            }
+        }
+    }
 }

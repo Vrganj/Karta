@@ -5,14 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12b6bb22-6482-4e94-bcf8-27f7b91de2a8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/util/ChunkMap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/FileAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/NmsPanelFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/PanelAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/PanelFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/PanelListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/PanelListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/Karta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/Karta.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/KartaCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/KartaCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/PanelManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/PanelManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/image/ImageKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/image/ImageKey.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/image/source/FileImageSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/image/source/FileImageSource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/image/source/ImageSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/image/source/ImageSource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/NmsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/NmsPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/placement/PanelLocation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/placement/PanelLocation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/util/BukkitUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/util/BukkitUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/Panel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/panel/Panel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,9 +53,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Enum" />
         <option value="Record" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -69,21 +75,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Karta [build].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/luka/IdeaProjects/Karta&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Download Sources.executor": "Run",
+    "Gradle.Karta [build].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/luka/IdeaProjects/Karta",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Gradle.Karta [build]">
     <configuration name="Karta [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -136,6 +147,14 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.218" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.218" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -148,6 +167,8 @@
       <workItem from="1655314382121" duration="32000" />
       <workItem from="1655381157396" duration="3988000" />
       <workItem from="1655413542283" duration="27222000" />
+      <workItem from="1736350281472" duration="164000" />
+      <workItem from="1736350448645" duration="4834000" />
     </task>
     <servers />
   </component>

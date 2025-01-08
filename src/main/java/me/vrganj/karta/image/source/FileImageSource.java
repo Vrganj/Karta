@@ -18,8 +18,9 @@ public class FileImageSource implements ImageSource {
         this.dataFolder = dataFolder;
     }
 
-    private File getFile(ImageKey imageKey) {
-        return new File(dataFolder, "players" + File.separator + imageKey.owner() + File.separator + "images" + File.separator + imageKey.image());
+    @Override
+    public File getFile(ImageKey imageKey) {
+        return new File(dataFolder, "players" + File.separator + imageKey.ownerId() + File.separator + "images" + File.separator + imageKey.image());
     }
 
     @Override
@@ -36,5 +37,10 @@ public class FileImageSource implements ImageSource {
     @Override
     public CompletableFuture<Boolean> exists(ImageKey imageKey) {
         return CompletableFuture.supplyAsync(() -> getFile(imageKey).exists());
+    }
+
+    @Override
+    public boolean deleteImage(ImageKey imageKey) {
+        return getFile(imageKey).delete();
     }
 }

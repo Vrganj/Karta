@@ -24,12 +24,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.slf4j.Logger;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class NmsPanel implements Panel {
 
@@ -37,14 +36,21 @@ public class NmsPanel implements Panel {
 
     private final Object2ObjectMap<UUID, IntList> showing = new Object2ObjectOpenHashMap<>();
 
+    private final UUID ownerId;
     private final ImageInput imageInput;
     private final PanelPlacement placement;
 
-    public NmsPanel(Logger logger, ImageInput imageInput, PanelPlacement placement) {
+    public NmsPanel(Logger logger, UUID ownerId, ImageInput imageInput, PanelPlacement placement) {
         this.logger = logger;
 
+        this.ownerId = ownerId;
         this.imageInput = imageInput;
         this.placement = placement;
+    }
+
+    @Override
+    public UUID getOwnerId() {
+        return ownerId;
     }
 
     @Override
@@ -146,7 +152,7 @@ public class NmsPanel implements Panel {
             try {
                 data = imageInput.getData().join();
             } catch (CompletionException e) {
-                logger.log(Level.WARNING, "Failed to get image " + imageInput, e.getCause());
+                logger.warn("Failed to get image {}", imageInput, e.getCause());
                 throw e;
             }
 
