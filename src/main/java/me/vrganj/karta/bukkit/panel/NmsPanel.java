@@ -2,8 +2,6 @@ package me.vrganj.karta.bukkit.panel;
 
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
-import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
-import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import me.vrganj.karta.api.image.ImageData;
@@ -32,6 +30,7 @@ import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -41,7 +40,6 @@ public class NmsPanel implements Panel {
     private final Logger logger;
 
     private final Object2ObjectMap<UUID, IntList> showing = new Object2ObjectOpenHashMap<>();
-    private final IntSet itemFrameIds = new IntOpenHashSet();
 
     private final UUID ownerId;
     private final ImageInput imageInput;
@@ -109,7 +107,6 @@ public class NmsPanel implements Panel {
                 connection.send(new ClientboundSetEntityDataPacket(itemFrame.getId(), itemFrame.getEntityData().packAll()));
 
                 entities.add(itemFrame.getId());
-                itemFrameIds.add(itemFrame.getId());
             }
         }
 
@@ -181,13 +178,11 @@ public class NmsPanel implements Panel {
             return;
         }
 
-        itemFrameIds.removeAll(ids);
-
         var packet = new ClientboundRemoveEntitiesPacket(ids);
         ((CraftPlayer) player).getHandle().connection.send(packet);
     }
 
-    public IntSet getItemFrameIds() {
-        return itemFrameIds;
+    public Map<UUID, IntList> getShowing() {
+        return showing;
     }
 }

@@ -1,7 +1,5 @@
 package me.vrganj.karta.bukkit;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -19,7 +17,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -41,8 +39,11 @@ public class BukkitPanelManager implements PanelManager {
                 .registerTypeHierarchyAdapter(Panel.class, new PanelAdapter(panelFactory))
                 .setPrettyPrinting()
                 .create();
+    }
 
-        Bukkit.getPluginManager().registerEvents(new PanelListener(this, panels), plugin);
+    @Override
+    public ChunkMap<Panel> getPanels() {
+        return panels;
     }
 
     @Override
@@ -82,51 +83,34 @@ public class BukkitPanelManager implements PanelManager {
     }
 
     public void load() {
-        var directory = new File(dataFolder, "players");
-        var files = directory.listFiles();
+        var file = new File(dataFolder, "panels.json");
 
-        if (files == null) {
-            return;
-        }
+        try (var reader = new FileReader(file)) {
+            Set<Panel> set = gson.fromJson(reader, new TypeToken<Set<Panel>>() {}.getType());
 
-        for (var playerDirectory : files) {
-            var file = new File(playerDirectory, "panels.json");
-
-            if (!file.exists()) {
-                continue;
+            for (var panel : set) {
+                addPanel(panel);
             }
-
-            try (var reader = new FileReader(file)) {
-                List<Panel> panels = gson.fromJson(reader, new TypeToken<List<Panel>>() {}.getType());
-
-                for (var panel : panels) {
-                    addPanel(panel);
-                }
-            } catch (IOException e) {
-                logger.error("Failed to load panels from {}", playerDirectory.getName(), e);
-            }
+        } catch (IOException e) {
+            logger.error("Failed to load panels", e);
         }
     }
 
     public void save() {
-        Multimap<UUID, Panel> playerMap = HashMultimap.create();
+        var file = new File(dataFolder, "panels.json");
+
+        Set<Panel> set = new HashSet<>();
 
         for (var world : panels.values()) {
             for (var chunk : world.values()) {
-                for (var panel : chunk) {
-                    playerMap.put(panel.getOwnerId(), panel);
-                }
+                set.addAll(chunk);
             }
         }
 
-        for (var ownerId : playerMap.keySet()) {
-            var file = new File(dataFolder, "players" + File.separator + ownerId + File.separator + "panels.json");
-
-            try (var writer = new FileWriter(file)) {
-                gson.toJson(playerMap.get(ownerId), writer);
-            } catch (IOException e) {
-                logger.error("Failed to save player panels of {}", ownerId, e);
-            }
+        try (var writer = new FileWriter(file)) {
+            gson.toJson(set, writer);
+        } catch (IOException e) {
+            logger.error("Failed to save panels", e);
         }
     }
 }

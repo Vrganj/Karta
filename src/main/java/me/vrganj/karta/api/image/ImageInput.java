@@ -1,7 +1,7 @@
 package me.vrganj.karta.api.image;
 
-import me.vrganj.karta.api.renderer.Renderer;
 import me.vrganj.karta.api.image.source.ImageSource;
+import me.vrganj.karta.api.renderer.Renderer;
 
 import java.awt.image.BufferedImage;
 import java.util.concurrent.CompletableFuture;

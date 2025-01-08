@@ -2,11 +2,11 @@ package me.vrganj.karta.bukkit.panel;
 
 import me.vrganj.karta.api.image.ImageInput;
 import me.vrganj.karta.api.image.ImageKey;
+import me.vrganj.karta.api.image.source.ImageSource;
 import me.vrganj.karta.api.panel.Panel;
 import me.vrganj.karta.api.panel.PanelFactory;
-import me.vrganj.karta.api.renderer.Renderer;
-import me.vrganj.karta.api.image.source.ImageSource;
 import me.vrganj.karta.api.panel.placement.PanelPlacement;
+import me.vrganj.karta.api.renderer.Renderer;
 import org.slf4j.Logger;
 
 import java.util.UUID;
