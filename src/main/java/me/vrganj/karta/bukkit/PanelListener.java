@@ -5,7 +5,6 @@ import io.papermc.paper.event.packet.PlayerChunkLoadEvent;
 import io.papermc.paper.event.packet.PlayerChunkUnloadEvent;
 import me.vrganj.karta.api.PanelManager;
 import me.vrganj.karta.api.panel.placement.PanelPlacement;
-import me.vrganj.karta.bukkit.panel.NmsPanel;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -44,25 +43,19 @@ public class PanelListener implements Listener {
 
         // TODO: optimize
 
-        for (var world : panelManager.getPanels().values()) {
-            for (var chunk : world.values()) {
-                for (var panel : chunk) {
-                    if (panel instanceof NmsPanel nmsPanel) {
-                        if (nmsPanel.getShowing().get(player.getUniqueId()).contains(event.getEntityId())) {
-                            if (player.hasPermission("karta.admin") || panel.getOwnerId().equals(player.getUniqueId())) {
-                                if (event.isAttack()) {
-                                    panelManager.removePanel(panel);
-                                } else {
-                                    var placement = new PanelPlacement(panel.getPlacement().location(), panel.getPlacement().face(), panel.getPlacement().rotation().clockwise(), panel.getPlacement().dimensions());
-                                    panelManager.removePanel(panel);
-                                    panelManager.addDefaultPanel(panel.getOwnerId(), panel.getImageInput().imageKey(), placement);
-                                }
+        var panel = panelManager.getPanel(player.getUniqueId(), event.getPlayer().getWorld().getName(), event.getEntityId());
 
-                                return;
-                            }
-                        }
-                    }
-                }
+        if (panel == null) {
+            return;
+        }
+
+        if (player.hasPermission("karta.admin") || panel.getOwnerId().equals(player.getUniqueId())) {
+            if (event.isAttack()) {
+                panelManager.removePanel(panel);
+            } else {
+                var placement = new PanelPlacement(panel.getPlacement().location(), panel.getPlacement().face(), panel.getPlacement().rotation().clockwise(), panel.getPlacement().dimensions());
+                panelManager.removePanel(panel);
+                panelManager.addDefaultPanel(panel.getOwnerId(), panel.getImageInput().imageKey(), placement);
             }
         }
     }

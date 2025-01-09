@@ -5,12 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12b6bb22-6482-4e94-bcf8-27f7b91de2a8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/ChunkService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/BukkitChunkService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/image/ImageInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/image/ImageInput.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/panel/placement/PanelRotation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/panel/placement/PanelRotation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/KartaCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/KartaCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/PanelManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/PanelManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/panel/Panel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/panel/Panel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/util/ChunkMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/api/util/ChunkMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/BukkitPanelManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/Karta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/Karta.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/PanelListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/PanelListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/panel/NmsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/panel/NmsPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/renderer/NmsRenderer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/util/NmsUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/vrganj/karta/bukkit/util/NmsUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,26 +73,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Download Sources.executor": "Run",
-    "Gradle.Karta [build].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/luka/IdeaProjects/Karta",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Karta [build].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/luka/IdeaProjects/Karta&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Gradle.Karta [build]">
     <configuration name="Karta [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -161,6 +167,8 @@
       <workItem from="1655413542283" duration="27222000" />
       <workItem from="1736350281472" duration="164000" />
       <workItem from="1736350448645" duration="19045000" />
+      <workItem from="1736445460748" duration="40000" />
+      <workItem from="1736453330512" duration="4083000" />
     </task>
     <servers />
   </component>

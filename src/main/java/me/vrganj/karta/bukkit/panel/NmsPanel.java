@@ -182,6 +182,7 @@ public class NmsPanel implements Panel {
         ((CraftPlayer) player).getHandle().connection.send(packet);
     }
 
+    @Override
     public Map<UUID, IntList> getShowing() {
         return showing;
     }

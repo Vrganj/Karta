@@ -31,4 +31,8 @@ public class ChunkMap<T> extends HashMap<String, Long2ObjectMap<Set<T>>> {
         var chunkValues = worldValues.computeIfAbsent(chunkKey, k -> new HashSet<>());
         chunkValues.add(value);
     }
+
+    public static long getChunkKey(int x, int z) {
+        return (long) x & 0xffffffffL | ((long) z & 0xffffffffL) << 32;
+    }
 }
